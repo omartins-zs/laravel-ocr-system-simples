@@ -49,6 +49,60 @@ const updateBadge = (badge, status) => {
     badge.className = `rounded-full px-3 py-1 text-xs font-semibold ${statusConfig.tone}`;
 };
 
+const startManualRefreshButton = () => {
+    const refreshButton = document.querySelector('[data-refresh-now]');
+
+    if (!refreshButton) {
+        return;
+    }
+
+    refreshButton.addEventListener('click', () => {
+        window.location.reload();
+    });
+};
+
+const startAutoRefreshTimer = () => {
+    const configNode = document.querySelector('[data-auto-refresh-seconds]');
+    const label = document.querySelector('[data-auto-refresh-label]');
+
+    if (!configNode) {
+        if (label) {
+            label.classList.add('hidden');
+        }
+        return;
+    }
+
+    const seconds = Number.parseInt(configNode.dataset.autoRefreshSeconds ?? '3', 10);
+
+    if (!Number.isFinite(seconds) || seconds <= 0) {
+        return;
+    }
+
+    let countdown = seconds;
+
+    const setLabel = () => {
+        if (!label) {
+            return;
+        }
+
+        label.classList.remove('hidden');
+        label.textContent = `Refresh automatico em ${countdown}s`;
+    };
+
+    setLabel();
+
+    window.setInterval(() => {
+        countdown -= 1;
+
+        if (countdown <= 0) {
+            window.location.reload();
+            return;
+        }
+
+        setLabel();
+    }, 1000);
+};
+
 const startOcrLivePolling = () => {
     const container = document.querySelector('[data-ocr-live]');
 
@@ -161,5 +215,7 @@ const startOcrLivePolling = () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+    startManualRefreshButton();
+    startAutoRefreshTimer();
     startOcrLivePolling();
 });

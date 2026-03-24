@@ -16,14 +16,36 @@
         };
     @endphp
 
+    @if (in_array($document->status, ['pending', 'processing'], true))
+        <div data-auto-refresh-seconds="3"></div>
+    @endif
+
     <section class="space-y-6">
         <div class="flex flex-wrap items-center justify-between gap-4">
             <div>
-                <p class="text-sm text-slate-500">Detalhe do histórico</p>
+                <p class="text-sm text-slate-500">Detalhe do historico</p>
                 <h1 class="text-2xl font-bold text-slate-900">{{ $document->original_name }}</h1>
             </div>
 
-            <span class="rounded-full px-3 py-1 text-xs font-semibold {{ $statusClasses }}">{{ $statusLabel }}</span>
+            <div class="flex items-center gap-2">
+                <span class="rounded-full px-3 py-1 text-xs font-semibold {{ $statusClasses }}">{{ $statusLabel }}</span>
+
+                @if ($document->status === 'failed')
+                    <form method="POST" action="{{ route('history.rerun', $document) }}">
+                        @csrf
+                        <button
+                            type="submit"
+                            title="Reprocessar"
+                            class="inline-flex items-center rounded-lg border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-1 h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 1 1-9.73-3.357.75.75 0 1 0-1.164-.946 7 7 0 1 0 12.11 4.803h1.222a.75.75 0 0 0 .53-1.28l-2.25-2.25a.75.75 0 0 0-1.28.53v2.5h.562Z" clip-rule="evenodd" />
+                            </svg>
+                            Re-run
+                        </button>
+                    </form>
+                @endif
+            </div>
         </div>
 
         <div class="grid gap-6 lg:grid-cols-3">
@@ -40,7 +62,7 @@
                         <dd class="text-slate-600">{{ $document->mime_type }}</dd>
                     </div>
                     <div>
-                        <dt class="font-medium text-slate-700">Extensão</dt>
+                        <dt class="font-medium text-slate-700">Extensao</dt>
                         <dd class="text-slate-600">{{ strtoupper($document->extension) }}</dd>
                     </div>
                     <div>
@@ -49,7 +71,7 @@
                     </div>
                     <div>
                         <dt class="font-medium text-slate-700">Arquivo salvo em</dt>
-                        <dd class="text-slate-600 break-all">{{ $document->stored_path }}</dd>
+                        <dd class="break-all text-slate-600">{{ $document->stored_path }}</dd>
                     </div>
                     <div>
                         <dt class="font-medium text-slate-700">Criado em</dt>
@@ -69,8 +91,8 @@
             </article>
 
             <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm lg:col-span-2">
-                <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Texto completo extraído</h2>
-                <pre class="mt-4 min-h-80 overflow-auto rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm whitespace-pre-wrap">{{ $document->extracted_text ?: 'Nenhum texto extraído até o momento.' }}</pre>
+                <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Texto completo extraido</h2>
+                <pre class="mt-4 min-h-80 overflow-auto rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm whitespace-pre-wrap">{{ $document->extracted_text ?: 'Nenhum texto extraido ate o momento.' }}</pre>
             </article>
         </div>
 
@@ -78,7 +100,7 @@
             href="{{ route('history.index') }}"
             class="inline-flex items-center rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
         >
-            Voltar ao histórico
+            Voltar ao historico
         </a>
     </section>
 @endsection

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\ProcessOcrDocumentJob;
 use App\Models\OcrDocument;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -36,5 +38,22 @@ class HistoryController extends Controller
         return view('history.show', [
             'document' => $ocrDocument,
         ]);
+    }
+
+    public function rerun(OcrDocument $ocrDocument): RedirectResponse
+    {
+        if ($ocrDocument->status !== OcrDocument::STATUS_FAILED) {
+            return back()->with('error', 'Apenas documentos com falha podem ser reprocessados.');
+        }
+
+        $ocrDocument->update([
+            'status' => OcrDocument::STATUS_PENDING,
+            'error_message' => null,
+            'processed_at' => null,
+        ]);
+
+        ProcessOcrDocumentJob::dispatch($ocrDocument->id);
+
+        return back()->with('success', 'Reprocessamento enviado para a fila com sucesso.');
     }
 }

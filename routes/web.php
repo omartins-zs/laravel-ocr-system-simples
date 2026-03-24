@@ -11,3 +11,4 @@ Route::post('/ocr', [OcrController::class, 'store'])->name('ocr.store');
 
 Route::get('/history', [HistoryController::class, 'index'])->name('history.index');
 Route::get('/history/{ocrDocument}', [HistoryController::class, 'show'])->name('history.show');
+Route::post('/history/{ocrDocument}/rerun', [HistoryController::class, 'rerun'])->name('history.rerun');

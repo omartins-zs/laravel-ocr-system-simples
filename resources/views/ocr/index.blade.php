@@ -103,12 +103,29 @@
                     <pre data-ocr-extracted-text class="mt-2 max-h-80 overflow-auto rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm whitespace-pre-wrap">{{ $document->extracted_text ?: 'Aguardando processamento da fila...' }}</pre>
                 </div>
 
-                <a
-                    href="{{ route('history.show', $document) }}"
-                    class="mt-4 inline-flex items-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
-                >
-                    Ver detalhe completo
-                </a>
+                <div class="mt-4 flex flex-wrap items-center gap-2">
+                    <a
+                        href="{{ route('history.show', $document) }}"
+                        class="inline-flex items-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+                    >
+                        Ver detalhe completo
+                    </a>
+
+                    @if ($document->status === 'failed')
+                        <form method="POST" action="{{ route('history.rerun', $document) }}">
+                            @csrf
+                            <button
+                                type="submit"
+                                class="inline-flex items-center rounded-lg border border-emerald-300 bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" class="mr-1 h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 1 1-9.73-3.357.75.75 0 1 0-1.164-.946 7 7 0 1 0 12.11 4.803h1.222a.75.75 0 0 0 .53-1.28l-2.25-2.25a.75.75 0 0 0-1.28.53v2.5h.562Z" clip-rule="evenodd" />
+                                </svg>
+                                Re-run
+                            </button>
+                        </form>
+                    @endif
+                </div>
             @else
                 <h2 class="text-xl font-semibold text-slate-900">Resultado</h2>
                 <p class="mt-3 text-sm text-slate-600">

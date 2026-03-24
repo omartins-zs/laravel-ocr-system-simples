@@ -14,23 +14,38 @@
             <a href="{{ route('ocr.index') }}" class="text-lg font-semibold tracking-tight">Laravel OCR System Simples</a>
 
             <div class="flex items-center gap-2">
+                <button
+                    type="button"
+                    data-refresh-now
+                    class="inline-flex items-center gap-2 rounded-lg border border-white/30 px-3 py-2 text-sm font-medium transition hover:bg-white/10"
+                    title="Atualizar pagina"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 1 1-9.73-3.357.75.75 0 1 0-1.164-.946 7 7 0 1 0 12.11 4.803h1.222a.75.75 0 0 0 .53-1.28l-2.25-2.25a.75.75 0 0 0-1.28.53v2.5h.562Z" clip-rule="evenodd" />
+                    </svg>
+                    <span class="hidden sm:inline">Refresh</span>
+                </button>
+
                 <a
                     href="{{ route('ocr.index') }}"
                     class="rounded-lg px-3 py-2 text-sm font-medium transition {{ request()->routeIs('ocr.*') ? 'bg-white/20' : 'hover:bg-white/10' }}"
                 >
                     OCR
                 </a>
+
                 <a
                     href="{{ route('history.index') }}"
                     class="rounded-lg px-3 py-2 text-sm font-medium transition {{ request()->routeIs('history.*') ? 'bg-white/20' : 'hover:bg-white/10' }}"
                 >
-                    Histórico
+                    Historico
                 </a>
             </div>
         </nav>
     </header>
 
     <main class="mx-auto w-full max-w-6xl px-4 py-8">
+        <div data-auto-refresh-label class="mb-4 hidden rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-500"></div>
+
         @if (session('success'))
             <div class="mb-6 rounded-lg border border-emerald-300 bg-emerald-50 px-4 py-3 text-sm text-emerald-800" role="alert">
                 {{ session('success') }}
