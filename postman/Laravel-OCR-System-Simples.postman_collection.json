@@ -1,0 +1,266 @@
+{
+  "info": {
+    "_postman_id": "c685fce4-71a0-4f8e-b49a-9f6f9fdd3f90",
+    "name": "Laravel OCR System Simples - API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Collection para testar o fluxo OCR local: upload do arquivo, consulta de historico e detalhe."
+  },
+  "item": [
+    {
+      "name": "1) OCR - Upload Arquivo",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "C:/laragon/www/laravel-ocr-system-simples/test-files/03-nota-fiscal.png"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/api/ocr",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "ocr"
+          ]
+        },
+        "description": "Envia um arquivo para processamento OCR local. Se o upload der certo, o script salva automaticamente o id em {{document_id}} para as proximas requests."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 202 Accepted', function () {",
+              "    pm.response.to.have.status(202);",
+              "});",
+              "",
+              "const json = pm.response.json();",
+              "",
+              "pm.test('Resposta segue padrao da API', function () {",
+              "    pm.expect(json).to.have.property('status');",
+              "    pm.expect(json).to.have.property('status_code', 202);",
+              "    pm.expect(json).to.have.property('message');",
+              "    pm.expect(json).to.have.property('data');",
+              "    pm.expect(json).to.have.property('errors');",
+              "});",
+              "",
+              "pm.test('Resposta contem data.id', function () {",
+              "    pm.expect(json).to.have.property('data');",
+              "    pm.expect(json.data).to.have.property('id');",
+              "});",
+              "",
+              "if (json?.data?.id) {",
+              "    pm.collectionVariables.set('document_id', String(json.data.id));",
+              "    pm.collectionVariables.set('last_status', String(json.data.processing_status || 'pending'));",
+              "}",
+              "",
+              "console.log('document_id salvo:', pm.collectionVariables.get('document_id'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2) Historico - Listar",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/history?q={{query}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "history"
+          ],
+          "query": [
+            {
+              "key": "q",
+              "value": "{{query}}"
+            }
+          ]
+        },
+        "description": "Lista historico de uploads OCR. Pode filtrar por nome/status com a variavel {{query}}."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200 OK', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const json = pm.response.json();",
+              "",
+              "pm.test('Resposta segue padrao da API', function () {",
+              "    pm.expect(json).to.have.property('status');",
+              "    pm.expect(json).to.have.property('status_code', 200);",
+              "    pm.expect(json).to.have.property('message');",
+              "    pm.expect(json).to.have.property('data');",
+              "    pm.expect(json).to.have.property('errors');",
+              "});",
+              "",
+              "pm.test('Resposta contem data.items e data.meta', function () {",
+              "    pm.expect(json).to.have.property('data');",
+              "    pm.expect(json.data).to.have.property('items');",
+              "    pm.expect(json.data.items).to.be.an('array');",
+              "    pm.expect(json.data).to.have.property('meta');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "3) Historico - Detalhe por ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/history/{{document_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "history",
+            "{{document_id}}"
+          ]
+        },
+        "description": "Consulta o detalhe completo do documento salvo em {{document_id}}."
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (!pm.collectionVariables.get('document_id')) {",
+              "    console.warn('document_id vazio. Rode primeiro: 1) OCR - Upload Arquivo');",
+              "}"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200 OK', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const json = pm.response.json();",
+              "const status = json?.data?.processing_status || 'unknown';",
+              "",
+              "pm.test('Resposta segue padrao da API', function () {",
+              "    pm.expect(json).to.have.property('status');",
+              "    pm.expect(json).to.have.property('status_code', 200);",
+              "    pm.expect(json).to.have.property('message');",
+              "    pm.expect(json).to.have.property('data');",
+              "    pm.expect(json).to.have.property('errors');",
+              "});",
+              "",
+              "pm.test('Resposta contem data.processing_status', function () {",
+              "    pm.expect(json).to.have.property('data');",
+              "    pm.expect(json.data).to.have.property('processing_status');",
+              "});",
+              "",
+              "pm.collectionVariables.set('last_status', status);",
+              "",
+              "if (status === 'completed') {",
+              "    pm.collectionVariables.set('last_extracted_text', String(json?.data?.extracted_text || ''));",
+              "}",
+              "",
+              "console.log('status atual:', status);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "4) Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/up",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "up"
+          ]
+        },
+        "description": "Verifica se a aplicacao Laravel esta de pe."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200 OK', function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000",
+      "type": "string"
+    },
+    {
+      "key": "document_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "query",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "last_status",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "last_extracted_text",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
