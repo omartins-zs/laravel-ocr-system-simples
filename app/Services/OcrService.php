@@ -32,7 +32,7 @@ class OcrService
     private function extractNativePdfText(string $absolutePath): string
     {
         try {
-            $parser = new Parser();
+            $parser = new Parser;
             $text = $parser->parseFile($absolutePath)->getText();
 
             return $this->normalizeText($text);
@@ -88,7 +88,7 @@ class OcrService
         File::ensureDirectoryExists($tempDirectory);
 
         try {
-            $imagick = new \Imagick();
+            $imagick = new \Imagick;
             $imagick->setResolution($resolution, $resolution);
             $imagick->readImage($absolutePath);
 

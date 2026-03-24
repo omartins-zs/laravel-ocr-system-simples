@@ -29,7 +29,7 @@ function createNativePdf(string $path, array $lines): void
         '<< /Type /Pages /Kids [3 0 R] /Count 1 >>',
         '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>',
         '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>',
-        "<< /Length ".strlen($content)." >>\nstream\n".$content.'endstream',
+        '<< /Length '.strlen($content)." >>\nstream\n".$content.'endstream',
     ];
 
     $pdf = "%PDF-1.4\n";
