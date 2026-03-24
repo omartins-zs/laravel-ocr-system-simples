@@ -18,6 +18,7 @@
 /public/storage
 /storage/*.key
 /storage/pail
+/tmp-tesseract-nupkg
 /vendor
 Homestead.json
 Homestead.yaml
