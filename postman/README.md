@@ -3,14 +3,13 @@
 ## Arquivos
 
 - `Laravel-OCR-System-Simples.postman_collection.json`
-- `Laravel-OCR-System-Simples.local.postman_environment.json`
 
 ## Como importar
 
 1. Abra o Postman.
 2. Clique em `Import`.
-3. Importe os 2 arquivos acima.
-4. Selecione o environment `Laravel OCR System Simples - Local`.
+3. Importe apenas o arquivo de collection.
+4. Ajuste as variaveis da collection se necessario (`base_url`, `document_id`, `query`).
 
 ## Ordem recomendada de testes
 
@@ -18,6 +17,7 @@
 2. `3) Historico - Detalhe por ID` (repita ate `processing_status = completed`)
 3. `2) Historico - Listar`
 4. `4) Health Check`
+5. `5) API Health Check`
 
 ## Observacoes
 

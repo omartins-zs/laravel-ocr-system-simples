@@ -234,6 +234,52 @@
           }
         }
       ]
+    },
+    {
+      "name": "5) API Health Check",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/health",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "health"
+          ]
+        },
+        "description": "Health check padrao da API em JSON."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status 200 OK', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const json = pm.response.json();",
+              "",
+              "pm.test('Contrato de resposta padrao', function () {",
+              "    pm.expect(json).to.have.property('status', 'success');",
+              "    pm.expect(json).to.have.property('status_code', 200);",
+              "    pm.expect(json).to.have.property('message');",
+              "    pm.expect(json).to.have.property('data');",
+              "    pm.expect(json).to.have.property('errors');",
+              "});"
+            ]
+          }
+        }
+      ]
     }
   ],
   "variable": [
