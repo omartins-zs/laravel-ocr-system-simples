@@ -3,10 +3,10 @@
 @section('content')
     @php
         $statusClasses = match ($document->status) {
-            'completed' => 'bg-emerald-100 text-emerald-800',
-            'failed' => 'bg-red-100 text-red-800',
-            'processing' => 'bg-amber-100 text-amber-800',
-            default => 'bg-slate-200 text-slate-700',
+            'completed' => 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
+            'failed' => 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300',
+            'processing' => 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
+            default => 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200',
         };
         $statusLabel = match ($document->status) {
             'completed' => 'Concluido',
@@ -17,7 +17,7 @@
     @endphp
 
     @if (in_array($document->status, ['pending', 'processing'], true))
-        <div data-auto-refresh-seconds="3" class="hidden" aria-hidden="true"></div>
+        <div data-auto-refresh-seconds="5" class="hidden" aria-hidden="true"></div>
     @endif
 
     <section class="space-y-6">

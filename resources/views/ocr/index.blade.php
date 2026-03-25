@@ -14,14 +14,29 @@
 
                 <div>
                     <label for="file" class="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">Arquivo</label>
-                    <input
-                        id="file"
-                        name="file"
-                        type="file"
-                        accept=".pdf,.png,.jpg,.jpeg,.webp"
-                        class="block w-full max-w-full min-w-0 cursor-pointer rounded-lg border border-slate-300 bg-slate-50 p-2.5 text-sm text-slate-700 file:mr-4 file:rounded-md file:border-0 file:bg-slate-800 file:px-4 file:py-2 file:text-white hover:file:bg-slate-700 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
-                        required
-                    >
+                    <div class="rounded-xl border border-slate-300 bg-slate-50 p-3 dark:border-slate-600 dark:bg-slate-800/80">
+                        <input
+                            id="file"
+                            name="file"
+                            type="file"
+                            accept=".pdf,.png,.jpg,.jpeg,.webp"
+                            class="sr-only"
+                            required
+                        >
+                        <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+                            <label
+                                for="file"
+                                class="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-slate-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700 sm:w-auto"
+                            >
+                                <i class="fa-solid fa-upload"></i>
+                                Selecionar arquivo
+                            </label>
+                            <p data-file-name class="min-w-0 break-all text-xs text-slate-600 dark:text-slate-300">
+                                Nenhum arquivo selecionado
+                            </p>
+                        </div>
+                    </div>
+                    <p class="mt-2 text-xs text-slate-500 dark:text-slate-400">Tipos aceitos: PDF, PNG, JPG, JPEG, WEBP.</p>
 
                     @error('file')
                         <p class="mt-2 text-sm text-red-600 dark:text-red-300">{{ $message }}</p>
@@ -30,7 +45,7 @@
 
                 <button
                     type="submit"
-                    class="inline-flex items-center rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-200"
+                    class="inline-flex items-center rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-200 dark:focus:ring-emerald-900/40"
                 >
                     Processar arquivo
                 </button>
@@ -38,7 +53,7 @@
 
             <div class="mt-6 rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm text-blue-900 dark:border-blue-700 dark:bg-blue-900/30 dark:text-blue-200">
                 Para processar na fila local, rode:
-                <code class="rounded bg-blue-100 px-1 py-0.5">php artisan queue:work --queue=default</code>
+                <code class="rounded bg-blue-100 px-1 py-0.5 dark:bg-blue-900/40">php artisan queue:work --queue=default</code>
             </div>
         </section>
 
@@ -53,10 +68,10 @@
             @if ($document)
                 @php
                     $statusClasses = match ($document->status) {
-                        'completed' => 'bg-emerald-100 text-emerald-800',
-                        'failed' => 'bg-red-100 text-red-800',
-                        'processing' => 'bg-amber-100 text-amber-800',
-                        default => 'bg-slate-200 text-slate-700',
+                        'completed' => 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
+                        'failed' => 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300',
+                        'processing' => 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
+                        default => 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200',
                     };
                     $statusLabel = match ($document->status) {
                         'completed' => 'Concluido',
@@ -71,7 +86,7 @@
                     <span data-ocr-status-badge class="rounded-full px-3 py-1 text-xs font-semibold {{ $statusClasses }}">{{ $statusLabel }}</span>
                 </div>
                 <p data-ocr-live-state class="mt-2 text-xs text-slate-500 dark:text-slate-400">
-                    Atualizacao automatica a cada 3 segundos enquanto o processamento nao finalizar.
+                    Atualizacao automatica a cada 5 segundos enquanto o processamento nao finalizar.
                 </p>
 
                 <dl class="mt-4 space-y-2 text-sm text-slate-700 dark:text-slate-200">
@@ -95,7 +110,7 @@
 
                 <div
                     data-ocr-error-message
-                    class="mt-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700 {{ $document->status === 'failed' ? '' : 'hidden' }}"
+                    class="mt-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700 dark:border-red-700 dark:bg-red-900/30 dark:text-red-300 {{ $document->status === 'failed' ? '' : 'hidden' }}"
                 >{{ $document->error_message }}</div>
 
                 <div class="mt-4">

@@ -4,22 +4,22 @@ import 'flowbite';
 const STATUS_UI = {
     pending: {
         label: 'Pendente',
-        tone: 'bg-slate-200 text-slate-700',
+        tone: 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200',
         message: 'Arquivo na fila. Aguardando worker iniciar o processamento...',
     },
     processing: {
         label: 'Processando',
-        tone: 'bg-amber-100 text-amber-800',
+        tone: 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
         message: 'Processamento em andamento...',
     },
     completed: {
         label: 'Concluido',
-        tone: 'bg-emerald-100 text-emerald-800',
+        tone: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
         message: 'Processamento finalizado. Texto atualizado.',
     },
     failed: {
         label: 'Falhou',
-        tone: 'bg-red-100 text-red-800',
+        tone: 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300',
         message: 'Falha no processamento. Verifique os detalhes abaixo.',
     },
 };
@@ -50,42 +50,42 @@ const updateBadge = (badge, status) => {
 };
 
 const startThemeToggle = () => {
-    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const themeToggleIcon = document.getElementById('theme-toggle-icon');
     const themeToggleBtn = document.getElementById('theme-toggle');
 
-    if (!themeToggleBtn || !themeToggleDarkIcon || !themeToggleLightIcon) {
+    if (!themeToggleBtn || !themeToggleIcon) {
         return;
     }
 
-    if (
+    const isDarkMode =
         localStorage.getItem('color-theme') === 'dark'
-        || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-    ) {
-        themeToggleLightIcon.classList.remove('hidden');
-    } else {
-        themeToggleDarkIcon.classList.remove('hidden');
-    }
+        || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+    themeToggleIcon.className = `fa-solid ${isDarkMode ? 'fa-sun' : 'fa-moon'} text-sm`;
 
     themeToggleBtn.addEventListener('click', () => {
-        themeToggleDarkIcon.classList.toggle('hidden');
-        themeToggleLightIcon.classList.toggle('hidden');
-
+        let darkActive;
         if (localStorage.getItem('color-theme')) {
             if (localStorage.getItem('color-theme') === 'light') {
                 document.documentElement.classList.add('dark');
                 localStorage.setItem('color-theme', 'dark');
+                darkActive = true;
             } else {
                 document.documentElement.classList.remove('dark');
                 localStorage.setItem('color-theme', 'light');
+                darkActive = false;
             }
         } else if (document.documentElement.classList.contains('dark')) {
             document.documentElement.classList.remove('dark');
             localStorage.setItem('color-theme', 'light');
+            darkActive = false;
         } else {
             document.documentElement.classList.add('dark');
             localStorage.setItem('color-theme', 'dark');
+            darkActive = true;
         }
+
+        themeToggleIcon.className = `fa-solid ${darkActive ? 'fa-sun' : 'fa-moon'} text-sm`;
     });
 };
 
@@ -112,7 +112,7 @@ const startAutoRefreshTimer = () => {
         return;
     }
 
-    const seconds = Number.parseInt(configNode.dataset.autoRefreshSeconds ?? '3', 10);
+    const seconds = Number.parseInt(configNode.dataset.autoRefreshSeconds ?? '5', 10);
 
     if (!Number.isFinite(seconds) || seconds <= 0) {
         return;
@@ -126,7 +126,7 @@ const startAutoRefreshTimer = () => {
         }
 
         label.classList.remove('hidden');
-        label.textContent = `Refresh automatico em ${countdown}s`;
+        label.textContent = `Atualizacao automatica em ${countdown}s`;
     };
 
     setLabel();
@@ -141,6 +141,23 @@ const startAutoRefreshTimer = () => {
 
         setLabel();
     }, 1000);
+};
+
+const startFileInputLabel = () => {
+    const fileInput = document.getElementById('file');
+    const fileNameLabel = document.querySelector('[data-file-name]');
+
+    if (!fileInput || !fileNameLabel) {
+        return;
+    }
+
+    const updateFileLabel = () => {
+        const selectedFile = fileInput.files?.[0];
+        fileNameLabel.textContent = selectedFile ? selectedFile.name : 'Nenhum arquivo selecionado';
+    };
+
+    fileInput.addEventListener('change', updateFileLabel);
+    updateFileLabel();
 };
 
 const startOcrLivePolling = () => {
@@ -243,7 +260,7 @@ const startOcrLivePolling = () => {
     };
 
     fetchStatus();
-    timerId = window.setInterval(fetchStatus, 3000);
+    timerId = window.setInterval(fetchStatus, 5000);
 
     window.addEventListener(
         'beforeunload',
@@ -258,5 +275,6 @@ document.addEventListener('DOMContentLoaded', () => {
     startThemeToggle();
     startManualRefreshButton();
     startAutoRefreshTimer();
+    startFileInputLabel();
     startOcrLivePolling();
 });

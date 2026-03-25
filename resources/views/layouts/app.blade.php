@@ -18,10 +18,10 @@
 </head>
 <body class="min-h-screen bg-slate-100 text-slate-800 dark:bg-slate-950 dark:text-slate-100">
     <header class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 text-white shadow-lg dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
-        <nav class="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4">
+        <nav class="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4">
             <a href="{{ route('ocr.index') }}" class="text-lg font-semibold tracking-tight">Laravel OCR System Simples</a>
 
-            <div class="flex items-center gap-2">
+            <div class="flex flex-wrap items-center justify-end gap-2">
                 <button
                     type="button"
                     data-refresh-now
@@ -38,8 +38,7 @@
                     class="inline-flex items-center rounded-lg border border-white/30 px-3 py-2 text-sm font-medium transition hover:bg-white/10"
                     title="Alternar tema"
                 >
-                    <i id="theme-toggle-dark-icon" class="fa-solid fa-moon hidden text-sm"></i>
-                    <i id="theme-toggle-light-icon" class="fa-solid fa-sun hidden text-sm"></i>
+                    <i id="theme-toggle-icon" class="fa-solid fa-moon text-sm"></i>
                 </button>
 
                 <a

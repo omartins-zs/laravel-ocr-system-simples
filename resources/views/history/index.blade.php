@@ -6,7 +6,7 @@
     @endphp
 
     @if ($hasActiveProcessing)
-        <div data-auto-refresh-seconds="3" class="hidden" aria-hidden="true"></div>
+        <div data-auto-refresh-seconds="5" class="hidden" aria-hidden="true"></div>
     @endif
 
     <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
@@ -16,7 +16,7 @@
                 <h1 class="mt-1 text-2xl font-bold text-slate-900 dark:text-slate-100">Arquivos processados</h1>
                 @if ($hasActiveProcessing)
                     <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                        Atualizacao automatica ativa a cada 3 segundos enquanto houver itens pendentes.
+                        Atualizacao automatica ativa a cada 5 segundos enquanto houver itens pendentes.
                     </p>
                 @endif
             </div>
@@ -59,10 +59,10 @@
                         @foreach ($documents as $document)
                             @php
                                 $statusClasses = match ($document->status) {
-                                    'completed' => 'bg-emerald-100 text-emerald-800',
-                                    'failed' => 'bg-red-100 text-red-800',
-                                    'processing' => 'bg-amber-100 text-amber-800',
-                                    default => 'bg-slate-200 text-slate-700',
+                                    'completed' => 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300',
+                                    'failed' => 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300',
+                                    'processing' => 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
+                                    default => 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200',
                                 };
                                 $statusLabel = match ($document->status) {
                                     'completed' => 'Concluido',
