@@ -64,17 +64,8 @@
         "lint:empty": [
             "@php vendor/bin/pint --preset empty --test"
         ],
-        "analyse:5": [
-            "@php vendor/bin/phpstan analyse -c phpstan.level5.neon --memory-limit=1G"
-        ],
-        "analyse:7": [
-            "@php vendor/bin/phpstan analyse -c phpstan.level7.neon --memory-limit=1G"
-        ],
-        "analyse:8": [
-            "@php vendor/bin/phpstan analyse -c phpstan.level8.neon --memory-limit=1G"
-        ],
         "analyse": [
-            "@composer analyse:7"
+            "@php vendor/bin/phpstan analyse --memory-limit=1G"
         ],
         "test": [
             "@php artisan config:clear --ansi",

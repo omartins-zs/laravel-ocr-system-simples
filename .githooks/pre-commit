@@ -17,7 +17,7 @@ fi
 
 echo "Pint OK."
 
-echo "[2/2] Rodando Larastan Analise Estatica (nivel 7)..."
+echo "[2/2] Rodando Larastan Analise Estatica..."
 composer analyse
 STAN_STATUS=$?
 

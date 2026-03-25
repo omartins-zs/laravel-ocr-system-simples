@@ -1,2 +1,17 @@
 includes:
-    - phpstan.level7.neon
+    - ./vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 5
+
+    paths:
+        - app
+        - routes
+        - tests
+
+    excludePaths:
+        - vendor/*
+        - storage/*
+        - bootstrap/cache
+
+    inferPrivatePropertyTypeFromConstructor: true
