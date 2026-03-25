@@ -51,6 +51,9 @@ class HistoryController extends Controller
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function transformDocument(OcrDocument $document, bool $withFullText): array
     {
         return [

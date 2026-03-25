@@ -20,6 +20,7 @@ class ProcessOcrDocumentJob implements ShouldQueue
 
     public int $maxExceptions = 3;
 
+    /** @var array<int, int> */
     public array $backoff = [10, 30, 60];
 
     /**

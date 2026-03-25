@@ -6,6 +6,9 @@ use Illuminate\Http\JsonResponse;
 
 class ApiResponse
 {
+    /**
+     * @param  array<int|string, mixed>  $errors
+     */
     public static function success(
         string $message,
         mixed $data = null,
@@ -21,6 +24,9 @@ class ApiResponse
         ], $statusCode);
     }
 
+    /**
+     * @param  array<int|string, mixed>  $errors
+     */
     public static function error(
         string $message,
         int $statusCode = 400,

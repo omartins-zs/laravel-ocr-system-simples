@@ -29,7 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (ValidationException $exception, Request $request) {
             if (! $request->is('api/*') && ! $request->expectsJson()) {
-                return null;
+                return;
             }
 
             return ApiResponse::error(
@@ -41,7 +41,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (ModelNotFoundException|NotFoundHttpException $exception, Request $request) {
             if (! $request->is('api/*') && ! $request->expectsJson()) {
-                return null;
+                return;
             }
 
             return ApiResponse::error(
@@ -53,7 +53,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (AuthenticationException $exception, Request $request) {
             if (! $request->is('api/*') && ! $request->expectsJson()) {
-                return null;
+                return;
             }
 
             return ApiResponse::error(
@@ -65,7 +65,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (ThrottleRequestsException $exception, Request $request) {
             if (! $request->is('api/*') && ! $request->expectsJson()) {
-                return null;
+                return;
             }
 
             return ApiResponse::error(
@@ -77,7 +77,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $exceptions->render(function (Throwable $exception, Request $request) {
             if (! $request->is('api/*') && ! $request->expectsJson()) {
-                return null;
+                return;
             }
 
             $statusCode = $exception instanceof HttpExceptionInterface

@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use RuntimeException;
 use Smalot\PdfParser\Parser;
 use Symfony\Component\Process\Process;
+use thiagoalessio\TesseractOCR\Option;
 use thiagoalessio\TesseractOCR\TesseractOCR;
 use Throwable;
 
@@ -139,11 +140,11 @@ class OcrService
         $ocr->executable($binary);
 
         if ($tessdataPath !== '' && is_dir($tessdataPath)) {
-            $ocr->tessdataDir($tessdataPath);
+            $ocr->command->options[] = Option::tessdataDir($tessdataPath);
         }
 
         if ($language !== '') {
-            $ocr->lang($language);
+            $ocr->command->options[] = Option::lang($language);
         }
 
         $text = $this->normalizeText($ocr->run());

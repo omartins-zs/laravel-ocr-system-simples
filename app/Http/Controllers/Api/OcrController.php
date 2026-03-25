@@ -19,7 +19,7 @@ class OcrController extends Controller
         $document = OcrDocument::create([
             'original_name' => $file->getClientOriginalName(),
             'stored_path' => $storedPath,
-            'mime_type' => $file->getClientMimeType() ?? 'application/octet-stream',
+            'mime_type' => $file->getClientMimeType(),
             'extension' => strtolower($file->getClientOriginalExtension() ?: $file->extension() ?: 'bin'),
             'file_size' => $file->getSize(),
             'status' => OcrDocument::STATUS_PENDING,
