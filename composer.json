@@ -65,7 +65,7 @@
             "@php vendor/bin/pint --preset empty --test"
         ],
         "analyse": [
-            "@php vendor/bin/phpstan analyse --memory-limit=1G"
+            "@php vendor/bin/phpstan analyse --level=5 --memory-limit=1G"
         ],
         "test": [
             "@php artisan config:clear --ansi",

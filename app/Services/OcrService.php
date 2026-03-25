@@ -161,6 +161,7 @@ class OcrService
         $configuredBinary = trim((string) config('ocr.tesseract_binary', ''));
         $candidates = array_filter([
             $configuredBinary,
+            base_path('tools/Tesseract-OCR/tesseract.exe'),
             'tesseract',
             'C:\\Program Files\\Tesseract-OCR\\tesseract.exe',
             'C:\\Program Files (x86)\\Tesseract-OCR\\tesseract.exe',
