@@ -51,9 +51,11 @@
                 </button>
             </form>
 
-            <div class="mt-6 rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm text-blue-900 dark:border-blue-700 dark:bg-blue-900/30 dark:text-blue-200">
-                Para processar na fila local, rode:
-                <code class="rounded bg-blue-100 px-1 py-0.5 dark:bg-blue-900/40">php artisan queue:work --queue=default</code>
+            <div class="mt-6 rounded-xl border border-sky-200 bg-sky-50 p-4 text-sm text-sky-900 dark:border-sky-700/70 dark:bg-sky-900/20 dark:text-sky-200">
+                <p class="font-semibold">Para processar na fila local, rode:</p>
+                <code class="mt-2 block w-full overflow-x-auto rounded-lg border border-slate-300 bg-slate-900 px-3 py-2 font-mono text-xs text-slate-100 dark:border-slate-600 dark:bg-slate-950">
+                    php artisan queue:work --queue=default
+                </code>
             </div>
         </section>
 
