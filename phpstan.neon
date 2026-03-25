@@ -1,0 +1,2 @@
+includes:
+    - phpstan.level7.neon

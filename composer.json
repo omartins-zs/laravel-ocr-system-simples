@@ -49,8 +49,32 @@
         "lint": [
             "@php vendor/bin/pint --test"
         ],
+        "lint:laravel": [
+            "@php vendor/bin/pint --preset laravel --test"
+        ],
+        "lint:psr12": [
+            "@php vendor/bin/pint --preset psr12 --test"
+        ],
+        "lint:symfony": [
+            "@php vendor/bin/pint --preset symfony --test"
+        ],
+        "lint:per": [
+            "@php vendor/bin/pint --preset per --test"
+        ],
+        "lint:empty": [
+            "@php vendor/bin/pint --preset empty --test"
+        ],
+        "analyse:5": [
+            "@php vendor/bin/phpstan analyse -c phpstan.level5.neon --memory-limit=1G"
+        ],
+        "analyse:7": [
+            "@php vendor/bin/phpstan analyse -c phpstan.level7.neon --memory-limit=1G"
+        ],
+        "analyse:8": [
+            "@php vendor/bin/phpstan analyse -c phpstan.level8.neon --memory-limit=1G"
+        ],
         "analyse": [
-            "@php vendor/bin/phpstan analyse --memory-limit=1G"
+            "@composer analyse:7"
         ],
         "test": [
             "@php artisan config:clear --ansi",

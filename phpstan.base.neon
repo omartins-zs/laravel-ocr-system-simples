@@ -1,0 +1,15 @@
+includes:
+    - ./vendor/larastan/larastan/extension.neon
+
+parameters:
+    paths:
+        - app
+        - routes
+        - tests
+
+    excludePaths:
+        - vendor/*
+        - storage/*
+        - bootstrap/cache
+
+    inferPrivatePropertyTypeFromConstructor: true
