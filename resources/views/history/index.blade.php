@@ -6,32 +6,32 @@
     @endphp
 
     @if ($hasActiveProcessing)
-        <div data-auto-refresh-seconds="3"></div>
+        <div data-auto-refresh-seconds="3" class="hidden" aria-hidden="true"></div>
     @endif
 
-    <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
         <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-                <p class="text-sm font-medium uppercase tracking-wide text-slate-500">Historico</p>
-                <h1 class="mt-1 text-2xl font-bold text-slate-900">Arquivos processados</h1>
+                <p class="text-sm font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">Historico</p>
+                <h1 class="mt-1 text-2xl font-bold text-slate-900 dark:text-slate-100">Arquivos processados</h1>
                 @if ($hasActiveProcessing)
-                    <p class="mt-1 text-xs text-slate-500">
+                    <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
                         Atualizacao automatica ativa a cada 3 segundos enquanto houver itens pendentes.
                     </p>
                 @endif
             </div>
 
-            <form method="GET" action="{{ route('history.index') }}" class="flex w-full gap-2 md:w-auto">
+            <form method="GET" action="{{ route('history.index') }}" class="flex w-full flex-col gap-2 sm:flex-row md:w-auto">
                 <input
                     type="text"
                     name="q"
                     value="{{ $query }}"
                     placeholder="Buscar por nome ou status"
-                    class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-200 md:w-72"
+                    class="w-full min-w-0 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-200 sm:max-w-sm md:w-72 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-slate-400 dark:focus:ring-slate-700"
                 >
                 <button
                     type="submit"
-                    class="rounded-lg bg-slate-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"
+                    class="rounded-lg bg-slate-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600"
                 >
                     Buscar
                 </button>
@@ -39,13 +39,13 @@
         </div>
 
         @if ($documents->isEmpty())
-            <div class="mt-8 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-600">
+            <div class="mt-8 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-8 text-center text-sm text-slate-600 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300">
                 Nenhum arquivo encontrado no historico.
             </div>
         @else
             <div class="mt-6 overflow-x-auto">
                 <table class="w-full min-w-[860px] text-left text-sm">
-                    <thead class="bg-slate-100 text-slate-600">
+                    <thead class="bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300">
                         <tr>
                             <th class="px-4 py-3 font-semibold">Arquivo</th>
                             <th class="px-4 py-3 font-semibold">Tipo</th>
@@ -72,19 +72,19 @@
                                 };
                             @endphp
 
-                            <tr class="border-b border-slate-100 hover:bg-slate-50">
-                                <td class="px-4 py-3 font-medium text-slate-800">{{ $document->original_name }}</td>
-                                <td class="px-4 py-3 text-slate-600">{{ strtoupper($document->extension) }}</td>
+                            <tr class="border-b border-slate-100 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800/60">
+                                <td class="px-4 py-3 font-medium text-slate-800 dark:text-slate-100">{{ $document->original_name }}</td>
+                                <td class="px-4 py-3 text-slate-600 dark:text-slate-300">{{ strtoupper($document->extension) }}</td>
                                 <td class="px-4 py-3">
                                     <span class="rounded-full px-3 py-1 text-xs font-semibold {{ $statusClasses }}">{{ $statusLabel }}</span>
                                 </td>
-                                <td class="px-4 py-3 text-slate-600">{{ $document->excerpt(100) }}</td>
-                                <td class="px-4 py-3 text-slate-600">{{ $document->created_at?->format('d/m/Y H:i') }}</td>
+                                <td class="px-4 py-3 text-slate-600 dark:text-slate-300">{{ $document->excerpt(100) }}</td>
+                                <td class="px-4 py-3 text-slate-600 dark:text-slate-300">{{ $document->created_at?->format('d/m/Y H:i') }}</td>
                                 <td class="px-4 py-3">
                                     <div class="flex items-center gap-2">
                                         <a
                                             href="{{ route('history.show', $document) }}"
-                                            class="inline-flex rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-100"
+                                            class="inline-flex rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700"
                                         >
                                             Ver detalhe
                                         </a>
@@ -95,11 +95,9 @@
                                                 <button
                                                     type="submit"
                                                     title="Reprocessar"
-                                                    class="inline-flex items-center rounded-lg border border-emerald-300 bg-emerald-50 px-2 py-1.5 text-emerald-700 transition hover:bg-emerald-100"
+                                                    class="inline-flex items-center rounded-lg border border-emerald-300 bg-emerald-50 px-2 py-1.5 text-emerald-700 transition hover:bg-emerald-100 dark:border-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 dark:hover:bg-emerald-900/40"
                                                 >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                        <path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 1 1-9.73-3.357.75.75 0 1 0-1.164-.946 7 7 0 1 0 12.11 4.803h1.222a.75.75 0 0 0 .53-1.28l-2.25-2.25a.75.75 0 0 0-1.28.53v2.5h.562Z" clip-rule="evenodd" />
-                                                    </svg>
+                                                    <i class="fa-solid fa-repeat"></i>
                                                 </button>
                                             </form>
                                         @endif
